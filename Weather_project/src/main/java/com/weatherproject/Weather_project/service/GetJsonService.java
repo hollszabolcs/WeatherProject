@@ -16,8 +16,8 @@ public class GetJsonService {
         this.weather_projectRepository = weatherProjectRepository;
     }
 
-    public void processJsonData() {
-        String jsonData = weatherProjectService.getWeatherFromApi();
+    public void processJsonData(String city) {
+        String jsonData = weatherProjectService.getWeatherFromApi(city);
         Gson gson = new Gson();
         WeatherDto weatherdto = gson.fromJson(jsonData, WeatherDto.class);
         WeatherData weatherData = new WeatherData();
