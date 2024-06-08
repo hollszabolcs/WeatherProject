@@ -17,7 +17,7 @@ public class WeatherProjectService {
     }
 
     public String getWeatherFromApi(String city) {
-        final var apiUrl = URI.create("http://api.weatherapi.com/v1/current.json?key=ac57493674af4b0ea86144110242005&q=" + city + "&api=no");
+        final var apiUrl = URI.create("http://api.weatherapi.com/v1/current.json?key=fc1bbbb39fb34507a2e112206240806&q=" + city + "&api=no");
         return restTemplate.getForObject(apiUrl, String.class);
     }
 
