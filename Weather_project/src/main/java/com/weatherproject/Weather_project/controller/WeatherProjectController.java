@@ -1,7 +1,7 @@
 package com.weatherproject.Weather_project.controller;
 
 import com.weatherproject.Weather_project.service.GetJsonService;
-import com.weatherproject.Weather_project.service.WeatherProjectService;
+import com.weatherproject.Weather_project.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -11,10 +11,10 @@ public class WeatherProjectController {
     @Autowired
     private RestTemplate restTemplate;
     private final GetJsonService getJsonService;
-    private final WeatherProjectService weatherProjectService;
+    private final WeatherService weatherProjectService;
 
     @Autowired
-    public WeatherProjectController(GetJsonService getJsonService, WeatherProjectService weatherProjectService) {
+    public WeatherProjectController(GetJsonService getJsonService, WeatherService weatherProjectService) {
         this.getJsonService = getJsonService;
         this.weatherProjectService = weatherProjectService;
     }

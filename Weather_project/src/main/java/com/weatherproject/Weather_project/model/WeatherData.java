@@ -17,5 +17,6 @@ public class WeatherData {
     private String last_updated;
     private String temp_c;
 
+
     //TODO deal with naming convention
 }

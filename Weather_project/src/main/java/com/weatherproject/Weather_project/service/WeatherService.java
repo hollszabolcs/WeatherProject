@@ -1,7 +1,5 @@
 package com.weatherproject.Weather_project.service;
 
-import com.weatherproject.Weather_project.dto.WeatherDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -9,10 +7,10 @@ import java.net.URI;
 
 
 @Service
-public class WeatherProjectService {
+public class WeatherService {
     private final RestTemplate restTemplate;
 
-    public WeatherProjectService(RestTemplate restTemplate){
+    public WeatherService(RestTemplate restTemplate){
         this.restTemplate=restTemplate;
     }
 
