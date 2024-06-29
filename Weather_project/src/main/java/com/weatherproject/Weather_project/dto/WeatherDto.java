@@ -12,7 +12,7 @@ public class WeatherDto {
     @Expose
     private Current current;
     @Expose
-    private List<ForecastDayDTO> forecastday;
+    private Forecast forecast;
 
 
     @Data
@@ -44,19 +44,23 @@ public class WeatherDto {
         private String icon;
     }
 
-
     @Data
-    public static class ForecastDayDTO {
+    public static class ForecastDay {
         @Expose
         private String date;
         @Expose
-        private DayDTO dayDTO;
+        private Day day;
     }
 
     @Data
-    public static class DayDTO {
+    public static class Day {
         @Expose
         private double avgtemp_c;
+    }
+
+    @Data
+    public static class Forecast {
+        private List<?> forecastday;
     }
 
 }

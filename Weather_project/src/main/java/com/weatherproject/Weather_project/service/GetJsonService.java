@@ -7,47 +7,39 @@ import com.weatherproject.Weather_project.repository.WeatherProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class GetJsonService {
     private final WeatherService weatherProjectService;
     private final WeatherProjectRepository weather_projectRepository;
-    private final Gson gsonDeserialization;
+    private final Gson gson;
 
     @Autowired
     public GetJsonService(WeatherService weatherProjectService, WeatherProjectRepository weatherProjectRepository,
                           Gson gsonDeserialization) {
         this.weatherProjectService = weatherProjectService;
         this.weather_projectRepository = weatherProjectRepository;
-        this.gsonDeserialization = gsonDeserialization;
+        this.gson = gsonDeserialization;
     }
 
-    public void processJsonData(String city) {
+    public WeatherData processJsonData(String city) {
         String jsonData = weatherProjectService.getWeatherFromApi(city);
-        WeatherDto currentWeatherDto = gsonDeserialization.fromJson(jsonData, WeatherDto.class);
         WeatherData currentWeatherData = new WeatherData();
+        WeatherDto currentWeatherDto = gson.fromJson(jsonData, WeatherDto.class);
         currentWeatherData.setName(currentWeatherDto.getLocation().getName());
         currentWeatherData.setCountry(currentWeatherDto.getLocation().getCountry());
         currentWeatherData.setLast_updated(currentWeatherDto.getCurrent().getLast_updated());
         currentWeatherData.setTemp_c(String.valueOf(currentWeatherDto.getCurrent().getTemp_c()));
         currentWeatherData.setIcon(currentWeatherDto.getCurrent().getCondition().getIcon());
         currentWeatherData.setText(currentWeatherDto.getCurrent().getCondition().getText());
-        WeatherDto.ForecastDayDTO forecastDayDTO = gsonDeserialization.fromJson(jsonData, WeatherDto.ForecastDayDTO.class);
-        List<WeatherData.ForecasDay> forecastDays = new ArrayList<>();
-        if (forecastDayDTO != null && forecastDayDTO.getDayDTO() != null) {
-            for (WeatherDto.ForecastDayDTO forecastDTO : currentWeatherDto.getForecastday()) {
-                WeatherData.ForecasDay forecasDay = new WeatherData.ForecasDay();
-                forecasDay.setDate(forecastDayDTO.getDate());
-                WeatherData.Day day = new WeatherData.Day();
-                day.setAvgtemp_c(String.valueOf(forecastDTO.getDayDTO().getAvgtemp_c()));
-                forecasDay.setDay(day);
-                forecasDay.setWeatherData(currentWeatherData);
-                forecastDays.add(forecasDay);
-            }
+        for (Object forecastDayDTO : currentWeatherDto.getForecast().getForecastday()) {
+            WeatherDto.ForecastDay forecastDto =(WeatherDto.ForecastDay) forecastDayDTO;
+            WeatherData forecastWeatherData = new WeatherData();
+            forecastWeatherData.setName(currentWeatherDto.getLocation().getName());
+            forecastWeatherData.setCountry(currentWeatherDto.getLocation().getCountry());
+            forecastWeatherData.setLast_updated(forecastDto.getDate());
+            forecastWeatherData.setTemp_c(String.valueOf(forecastDto.getDay().getAvgtemp_c()));
+            weather_projectRepository.save(currentWeatherData);
         }
-        currentWeatherData.setForecasDay(forecastDays);
-        weather_projectRepository.save(currentWeatherData);
+        return currentWeatherData;
     }
 }

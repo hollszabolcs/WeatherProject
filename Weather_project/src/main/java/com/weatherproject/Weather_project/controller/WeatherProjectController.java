@@ -1,32 +1,42 @@
 package com.weatherproject.Weather_project.controller;
 
+import com.weatherproject.Weather_project.model.WeatherData;
 import com.weatherproject.Weather_project.service.GetJsonService;
-import com.weatherproject.Weather_project.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class WeatherProjectController {
     @Autowired
-    private RestTemplate restTemplate;
     private final GetJsonService getJsonService;
-    private final WeatherService weatherProjectService;
 
     @Autowired
-    public WeatherProjectController(GetJsonService getJsonService, WeatherService weatherProjectService) {
+    public WeatherProjectController(GetJsonService getJsonService) {
         this.getJsonService = getJsonService;
-        this.weatherProjectService = weatherProjectService;
     }
 
-    @GetMapping("/weatherdata")
-    String GetWeatherData(@RequestParam String city) {
+    @PostMapping("/printweatherdata")
+    public String printWeatherData(@RequestParam String city) {
         try {
-            getJsonService.processJsonData(city);
-            return "data has saved successfully";
+            WeatherData weatherData = getJsonService.processJsonData(city);
+
+            if (weatherData != null) {
+                StringBuilder response = new StringBuilder();
+                response.append("City: ").append(weatherData.getName()).append("\n")
+                        .append("Country: ").append(weatherData.getCountry()).append("\n")
+                        .append("Last Updated: ").append(weatherData.getLast_updated()).append("\n")
+                        .append("Temperature (C): ").append(weatherData.getTemp_c()).append("\n")
+                        .append("Condition Icon: ").append(weatherData.getIcon()).append("\n")
+                        .append("Condition Text: ").append(weatherData.getText()).append("\n");
+                return response.toString();
+            } else {
+                return "No weather data found for the specified city.";
+            }
         } catch (Exception e) {
-            return "Error during the saving: " + e.getMessage();
+            e.printStackTrace();
+            return "Error during the retrieval: " + e.getMessage();
         }
     }
-
 }
