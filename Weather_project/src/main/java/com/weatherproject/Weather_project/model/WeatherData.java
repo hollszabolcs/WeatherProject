@@ -3,8 +3,6 @@ package com.weatherproject.Weather_project.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
 @Table(name = "weather_forecast")
@@ -14,18 +12,21 @@ public class WeatherData {
     private int id;
     private String name;
     private String country;
-    private String last_updated;
-    private String temp_c;
+    @Column(name = "last_updated")
+    private String lastUpdated;
+    @Column(name = "temp_c")
+    private String tempC;
     @Transient
     private String icon;
     @Transient
     private String text;
-
-    @OneToMany(mappedBy = "weatherData", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Transient
-    private List<ForecastDay> forecastDays;
+    private String date;
+    @Transient
+    @Column(name = "avgtemp_c")
+    private String avgTempC;
 
-    @Data
+/*    @Data
     @Entity
     @Table(name = "forecast_day")
     public static class ForecastDay {
@@ -40,12 +41,11 @@ public class WeatherData {
 
         @Embedded
         private Day day;
-    }
+    }*/
 
-    @Data
+/*    @Data
     @Embeddable
     public static class Day {
         private String avgtemp_c;
-    }
-    //TODO deal with naming convention
+    }*/
 }

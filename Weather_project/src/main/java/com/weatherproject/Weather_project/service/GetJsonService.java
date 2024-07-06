@@ -27,19 +27,11 @@ public class GetJsonService {
         WeatherDto currentWeatherDto = gson.fromJson(jsonData, WeatherDto.class);
         currentWeatherData.setName(currentWeatherDto.getLocation().getName());
         currentWeatherData.setCountry(currentWeatherDto.getLocation().getCountry());
-        currentWeatherData.setLast_updated(currentWeatherDto.getCurrent().getLast_updated());
-        currentWeatherData.setTemp_c(String.valueOf(currentWeatherDto.getCurrent().getTemp_c()));
+        currentWeatherData.setLastUpdated(currentWeatherDto.getCurrent().getLast_updated());
+        currentWeatherData.setTempC(String.valueOf(currentWeatherDto.getCurrent().getTemp_c()));
         currentWeatherData.setIcon(currentWeatherDto.getCurrent().getCondition().getIcon());
         currentWeatherData.setText(currentWeatherDto.getCurrent().getCondition().getText());
-        for (Object forecastDayDTO : currentWeatherDto.getForecast().getForecastday()) {
-            WeatherDto.ForecastDay forecastDto =(WeatherDto.ForecastDay) forecastDayDTO;
-            WeatherData forecastWeatherData = new WeatherData();
-            forecastWeatherData.setName(currentWeatherDto.getLocation().getName());
-            forecastWeatherData.setCountry(currentWeatherDto.getLocation().getCountry());
-            forecastWeatherData.setLast_updated(forecastDto.getDate());
-            forecastWeatherData.setTemp_c(String.valueOf(forecastDto.getDay().getAvgtemp_c()));
-            weather_projectRepository.save(currentWeatherData);
-        }
+        weather_projectRepository.save(currentWeatherData);
         return currentWeatherData;
     }
 }
