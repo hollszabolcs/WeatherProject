@@ -26,26 +26,4 @@ public class WeatherData {
     @Column(name = "avgtemp_c")
     private String avgTempC;
 
-/*    @Data
-    @Entity
-    @Table(name = "forecast_day")
-    public static class ForecastDay {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id;
-        private String date;
-
-        @ManyToOne
-        @JoinColumn(name = "weather_data_id")
-        private WeatherData weatherData;
-
-        @Embedded
-        private Day day;
-    }*/
-
-/*    @Data
-    @Embeddable
-    public static class Day {
-        private String avgtemp_c;
-    }*/
 }
